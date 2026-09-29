@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pouniii | Toy Guide</title>
+
+    <style>
+        :root {
+            --bg: #090b14;
+            --panel: rgba(20, 24, 40, 0.82);
+            --panel-light: rgba(255, 255, 255, 0.07);
+            --text: #f7f8ff;
+            --muted: #a7aec5;
+            --accent: #8b5cf6;
+            --accent-2: #22d3ee;
+            --user: #6d4aff;
+            --border: rgba(255, 255, 255, 0.11);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.24), transparent 30%),
+                radial-gradient(circle at 85% 85%, rgba(34, 211, 238, 0.16), transparent 30%),
+                var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+        }
+
+        .app {
+            width: min(1100px, 100%);
+            height: min(820px, 94vh);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            background: var(--panel);
+            backdrop-filter: blur(22px);
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.45);
+        }
+
+        .sidebar {
+            padding: 28px;
+            border-right: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 34px;
+        }
+
+        .logo {
+            width: 46px;
+            height: 46px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            font-size: 23px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .brand h1 {
+            font-size: 21px;
+            margin: 0;
+        }
+
+        .brand span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        .intro {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--panel-light);
+        }
+
+        .intro h2 {
+            font-size: 17px;
+            margin: 0 0 9px;
+        }
+
+        .intro p {
+            color: var(--muted);
+            line-height: 1.65;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .topics {
+            margin-top: 22px;
+        }
+
+        .topics h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+        }
+
+        .topic {
+            display: inline-block;
+            padding: 8px 10px;
+            margin: 4px 3px 0 0;
+            border-radius: 999px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: #d9d0ff;
+            font-size: 12px;
+        }
+
+        .chat {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+        }
+
+        .topbar {
+            min-height: 76px;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            box-shadow: 0 0 14px #34d399;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 26px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 18px;
+            animation: appear 0.22s ease-out;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .bubble {
+            max-width: min(720px, 82%);
+            padding: 14px 17px;
+            border-radius: 19px;
+            line-height: 1.55;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .bot .bubble {
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.055);
+            border-bottom-left-radius: 6px;
+        }
+
+        .user .bubble {
+            background: linear-gradient(135deg, #6d4aff, #8b5cf6);
+            border-bottom-right-radius: 6px;
+            box-shadow: 0 8px 25px rgba(109, 74, 255, 0.2);
+        }
+
+        .composer {
+            padding: 18px 22px 22px;
+            border-top: 1px solid var(--border);
+        }
+
+        .input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 8px 8px 17px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        textarea {
+            flex: 1;
+            resize: none;
+            border: 0;
+            outline: 0;
+            color: var(--text);
+            background: transparent;
+            font: inherit;
+            font-size: 14px;
+            max-height: 110px;
+        }
+
+        textarea::placeholder {
+            color: #7e849b;
+        }
+
+        button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        .send {
+            width: 43px;
+            height: 43px;
+            border-radius: 14px;
+            color: white;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            font-size: 17px;
+            transition: transform 0.2s ease;
+        }
+
+        .send:hover {
+            transform: translateY(-2px);
+        }
+
+        .send:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hint {
+            text-align: center;
+            color: #737a91;
+            font-size: 11px;
+            margin: 10px 0 0;
+        }
+
+        .typing {
+            color: var(--muted);
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 760px) {
+            body {
+                padding: 0;
+            }
+
+            .app {
+                height: 100vh;
+                border-radius: 0;
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .bubble {
+                max-width: 88%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">🧸</div>
+                <div>
+                    <h1>Pouniii</h1>
+                    <span>Toy Knowledge Chatbot</span>
+                </div>
+            </div>
+
+            <section class="intro">
+                <h2>Ask about toys</h2>
+                <p>
+                    Pouniii is a focused AI assistant for learning about toys,
+                    toy categories, age suitability, materials, play value,
+                    safety basics, and toy-related information.
+                </p>
+            </section>
+
+            <section class="topics">
+                <h3>Try asking</h3>
+                <span class="topic">Toy types</span>
+                <span class="topic">Age groups</span>
+                <span class="topic">Materials</span>
+                <span class="topic">Educational toys</span>
+                <span class="topic">Toy safety</span>
+                <span class="topic">Outdoor toys</span>
+            </section>
+        </aside>
+
+        <section class="chat">
+            <header class="topbar">
+                <strong>Chat with Pouniii</strong>
+                <div class="status">
+                    <span class="dot"></span>
+                    Online
+                </div>
+            </header>
+
+            <div class="messages" id="messages">
+                <div class="message bot">
+                    <div class="bubble">
+                        Hi! 👋 I'm <strong>Pouniii</strong>. Ask me anything related to toys, and I'll help you with it.
+                    </div>
+                </div>
+            </div>
+
+            <form class="composer" id="chatForm">
+                <div class="input-wrap">
+                    <textarea
+                        id="messageInput"
+                        rows="1"
+                        placeholder="Ask a toy-related question..."
+                        autocomplete="off"
+                    ></textarea>
+                    <button class="send" id="sendButton" type="submit" aria-label="Send">➤</button>
+                </div>
+                <p class="hint">Pouniii answers toy-related questions only.</p>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("chatForm");
+        const input = document.getElementById("messageInput");
+        const messages = document.getElementById("messages");
+        const sendButton = document.getElementById("sendButton");
+
+        function addMessage(text, type) {
+            const wrapper = document.createElement("div");
+            wrapper.className = `message ${type}`;
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.textContent = text;
+
+            wrapper.appendChild(bubble);
+            messages.appendChild(wrapper);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function addTyping() {
+            const wrapper = document.createElement("div");
+            wrapper.className = "message bot";
+            wrapper.id = "typingMessage";
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble typing";
+            bubble.textContent = "Pouniii is thinking...";
+
+            wrapper.appendChild(bubble);
+            messages.appendChild(wrapper);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function removeTyping() {
+            document.getElementById("typingMessage")?.remove();
+        }
+
+        input.addEventListener("input", () => {
+            input.style.height = "auto";
+            input.style.height = Math.min(input.scrollHeight, 110) + "px";
+        });
+
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                form.requestSubmit();
+            }
+        });
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const message = input.value.trim();
+            if (!message || sendButton.disabled) return;
+
+            addMessage(message, "user");
+            input.value = "";
+            input.style.height = "auto";
+
+            sendButton.disabled = true;
+            addTyping();
+
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await response.json();
+                removeTyping();
+                addMessage(
+                    data.reply || "I couldn't generate a response.",
+                    "bot"
+                );
+            } catch (error) {
+                removeTyping();
+                addMessage(
+                    "Something went wrong while connecting to Pouniii. Please try again.",
+                    "bot"
+                );
+            } finally {
+                sendButton.disabled = false;
+                input.focus();
+            }
+        });
+    </script>
+</body>
+</html>
